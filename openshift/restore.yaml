@@ -1,0 +1,7 @@
+apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  name: hello-world
+  namespace: openshift-adp
+spec:
+  backupName: hello-world

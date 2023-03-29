@@ -1,0 +1,25 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  generateName: openshift-adp-
+  namespace: openshift-adp
+  name: oadp
+spec:
+  targetNamespaces:
+    - openshift-adp
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: redhat-oadp-operator
+  namespace: openshift-adp
+spec:
+  # NOTE: there are issues with partially failed backups with 1.1
+  channel: stable-1.1
+  #channel: stable-1.0
+  installPlanApproval: Automatic
+  name: redhat-oadp-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: oadp-operator.v1.1.2
+  #startingCSV: oadp-operator.v1.0.8

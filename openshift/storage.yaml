@@ -1,0 +1,42 @@
+apiVersion: oadp.openshift.io/v1alpha1
+kind: CloudStorage
+metadata:
+  name: dscott-oadp
+  namespace: openshift-adp
+spec:
+  creationSecret:
+    key: credentials
+    name: cloud-credentials
+  enableSharedConfig: true
+  name: dscott-oadp
+  provider: aws
+  region: us-east-1
+---
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: dscott-dpa
+  namespace: openshift-adp
+spec:
+  backupLocations:
+  - bucket:
+      cloudStorageRef:
+        name: dscott-oadp
+      credential:
+        key: credentials
+        name: cloud-credentials
+      default: true
+  configuration:
+    velero:
+      defaultPlugins:
+      - openshift
+      - aws
+    restic:
+      enable: false
+  volumeSnapshots:
+  - velero:
+      config:
+        credentialsFile: /tmp/credentials/openshift-adp/cloud-credentials-credentials
+        enableSharedConfig: "true"
+        region: us-east-1
+      provider: aws
